@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>Lab 07 — US Power Plants</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,900i" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Chivo:ital@1&display=swap" rel="stylesheet">
+
+	<style>
+		/*hey Boyd - do you care to explain a little more about using font-face? We went over it way earlier in the last class, but I'm unable to get it to work for wider access to custom fonts (outside of Google)
+		
+		/* @font-face {  
+			font-family: 'myWebFont', sans-serif;
+			src: url(styles/storm-font/StormExtrabold-R9le.ttf);
+		} */
+
+
+		body {
+			margin: 0;
+			padding: 0;
+			background: #8b8bc9;
+			font-family: 'Chivo', sans-serif;
+			font-weight: 300;
+			color: #3d3d3d;
+			font-size: 100%;
+			/* 16px is default browser size */
+
+		}
+
+		header,
+		section,
+		footer {
+			width: 80%;
+			margin: 10px auto;
+		}
+
+		h1 {
+			font-weight: 900;
+			font-size: 4em;
+			font-style: italic;
+			/* The em unit. 3x the current size */
+			letter-spacing: .02em;
+			margin: 5px 0;
+			text-transform: uppercase;
+			text-align: center;
+			font-family: 'Bangers';
+			color: #021022;
+			text-decoration: underline;
+		}
+
+		h2 {
+			font-weight: 300;
+			color: #021022;
+			font-size: 2.2em;
+			letter-spacing: .06em;
+			font-style: italic;
+			margin: 5px 0;
+			text-decoration: underline;
+			text-align: center;
+		}
+
+		h3 {
+			font-weight: 300i;
+			font-size: 1.5em;
+			margin-bottom: 5px;
+		}
+
+		p {
+			font-size: 1.3em;
+			line-height: 1.8em;
+			margin-bottom: 5px;
+			font-family: 'Chivo', sans-serif;
+			text-indent: 25px;
+			color:#3b0b05
+		}
+
+		a {
+			color: #004A8B;
+			font-weight: 400;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		ul {
+			padding: 0px 20px 4px 20px;
+			font-size: 1.1em;
+			line-height: 1.2em;
+			color: #63666a;
+		}
+
+		li {
+			margin: 10px 0
+		}
+
+		hr {
+			margin: 20px 0;
+			border: 0;
+			height: 1px;
+			background: #63666a;
+
+		}
+
+		.linkbox {
+			margin: 3px 0 20px 0;
+			display: block;
+			font-size: 0.9em;
+			font-weight: 300;
+			line-height: 1.3em;
+		}
+
+		#map {
+			width: 100%;
+			height: 450px;
+			margin: 20px auto;
+
+		}
+
+		.max-image-width {
+			width: 100%;
+		}
+
+		/* Use float property to make two-column layout */
+		.first-column {
+			float: left;
+			width: 49%;
+			padding-right: 2%;
+		}
+
+		.column {
+			float: left;
+			width: 49%;
+		}
+
+		/* Clear floats after the columns */
+		.row::after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		/* When browser is 900px wide or less */
+		@media screen and (max-width: 900px) {
+
+			.first-column,
+			.second-column {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<header>
+		<h1>U.S. Power Plants</h1>
+	</header>
+	<section>
+		<div class="row">
+			<div id="map"></div>
+
+			<div class="first-column">
+				<h2>Patterns of energy production</h2>
+				<p>
+					Everyone knows that wood and biomass have long been a very inefficient form of power supply. Yet energy output through these methods provides a noticeable amount of energy throughout the United States. Although biomass production is growing increasingly in efficiency, both biomass and wood still remain a simple yet less-than-stellar approach to  powering our homes, restaurants, and places in need of power. For more information about biomass production, check out <a href= 'https://en.wikipedia.org/wiki/Biomass'> this link</a> about it's production, use, and new ways that scientists have discovered on utilizing its potential</p>
+					<p>
+						Woodburning, on the other hand, has experienced less technological innovation than it's <i>other</i> biomass counterpart. For more information on woodburning power plants, check out <a href='https://energynews.us/2019/11/12/wither-biomass-michigan-wood-fired-power-plants-face-uncertain-future/'>anecdotal example</a> of how woodburning plants are slowly beginning to be phased out of production here in the U.S. 
+					</p>
+					<p>
+						The map above showcases how biomass and wood differ in terms of MegaWatt output within the U.S.. One may notice that woodburning plants relatively generate more power than biomass, although there exists a higher number of individual biomass plants in and of themselves. This is a good jumping-off point for examining just how these two fuel sources compare and differ in production rate as well as frequency. Scroll over the individual points to see the name of the plant as well as its corresponding production in MegaWatts (MW). 
+
+					</p>
+
+				<p><b>Social links</b></p>
+				<ul>
+					<li>See my projects on GitHub: <a href="https://github.com/newmapsplus">New Maps Plus</a></li>
+					<li>Follow me on twitter: <a href="https://twitter.com/NewMapsPlus">@NewMapsPlus</a></li>
+					<li>Visit my <a href='#'>mapping portfolio</a>.</li>
+				</ul>
+
+
+			</div>
+			<div class="column">
+				<img class="max-image-width" src="https://farm2.staticflickr.com/1816/28917431097_5bb5cadb70_h.jpg"
+					title="Electricity and bubbles in a Lexington sunset">
+				<div class="linkbox">
+					Electricity and bubbles in a Lexington sunset
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer>
+		<hr>
+
+		<a href="https://newmapsplus.github.io">
+			<img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png"
+				alt="University of Kentucky Geography">
+		</a>
+
+		<a href="https://uky-gis.github.io">
+			<img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png"
+				alt="University of Kentucky Geography">
+		</a>
+
+	</footer>
+
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="data/power-plants.js"></script>
+
+
+
+
+	<script>
+		// map options
+		var options = {
+			center: [38, -95],
+			zoom: 4,
+			zoomControl: false
+		}
+
+		// create a Leaflet map in our division container with id of 'map'
+		var map = L.map('map', options);
+
+		// Leaflet providers base map URL
+		var basemap_source =
+			'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/dark_all/{z}/{x}/{y}.png'
+
+		// Leaflet providers attributes
+		var basemap_options = {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		};
+
+		// request some basemap tiles and add to the map
+		var tiles = L.tileLayer(basemap_source, basemap_options).addTo(map);
+
+
+		var commonStyles = {
+			weight: 1,
+			stroke: 1,
+			fillOpacity: .7
+		};
+
+		// Leaflet object for plants - Wood burning and biomass plants 
+
+		L.geoJson(plants, {
+			pointToLayer: function (feature, latlng) {
+				return L.circleMarker(latlng, commonStyles);
+			},
+			onEachFeature: function (feature, layer) {
+				var fuel = feature.properties.fuel_source // access fuel sources if more than one
+				if (feature.properties.fuel_source.Wood) {
+					for (var i in fuel) {
+						console.log(i, fuel[i])
+					}
+					layer.setStyle({
+						fillColor: '#C75912',
+						radius: getRadius(feature.properties.capacity_mw)
+					})
+				} else if (feature.properties.fuel_source.Biomass) {
+					layer.setStyle({
+						fillColor: '#23F28E',
+						radius: getRadius(feature.properties.capacity_mw) // by capacity
+					})
+				}
+				layer.on('mouseover', function () { // mouseover event - change color
+					if (feature.properties.fuel_source.Wood) {
+						layer.setStyle({
+							fillColor: '#EC1504'
+						})
+						layer.bindTooltip(`<strong>${feature.properties.plant_name}</strong>
+						<br> Produces ${feature.properties.capacity_mw} MW
+						<br>`)
+					} else if (feature.properties.fuel_source.Biomass) {
+						layer.setStyle({
+							fillColor: '#EC1504'
+						})
+						layer.bindTooltip(`<strong> ${feature.properties.plant_name}</strong>
+								<br>Produces ${feature.properties.capacity_mw} MW`)
+					}
+				}); 
+				layer.on('mouseout', function () {
+					if (feature.properties.fuel_source.Wood) {
+						layer.setStyle({
+							fillColor: '#C75912'
+						})
+					} else if (feature.properties.fuel_source.Biomass) {
+						layer.setStyle({
+							fillColor: '#23F28E'
+						})
+					}
+				})
+			},
+			filter: function (feature) {
+				if (feature.properties.fuel_source.Wood ||
+					feature.properties.fuel_source.Biomass) {
+					return feature;
+				}
+			}
+		}).addTo(map)
+
+
+		var zoomAesthetic = L.geoJson(plants, { // variable for fitBounds 
+			filter: function (feature) {
+				if (feature.properties.fuel_source.Biomass) {
+					return feature;
+				}
+			}
+		});
+
+		// radius proportional to output 
+		function getRadius(area) {
+			var radius = Math.sqrt(area / Math.PI);
+			return radius * 1.2
+		}
+
+		map.fitBounds(zoomAesthetic.getBounds()); // better zoom aesthetic 
+
+
+</script>
+
+</body>
+
+</html>
